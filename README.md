@@ -11,7 +11,8 @@ For security reason all token saved in Key module. Key module is required.
 ## Structure
 
 1. Configuration Form in Services
-2. By defualt in Content Type, you can add custom logical field `field_crossposting_telegram`. This is field, need for Activating checkbox for reposting New node to your channel. In `.module` file, you can edit in line 19, field to your name.
+2. In module folder you need install Telegram API SDK. Please go to the folder in module and run `composer update`
+3. By defualt in Content Type, you can add custom logical field `field_crossposting_telegram`. This is field, need for Activating checkbox for reposting New node to your channel. In `.module` file, you can edit in line 19, field to your name.
 
 ## Authors
 
