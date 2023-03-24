@@ -1,0 +1,19 @@
+# Created by antiden
+# node
+node_modules
+vendors
+
+# build
+dist
+
+# IDE / Editor
+.idea
+
+# Service worker
+sw.*
+
+# macOS
+.DS_Store
+
+# Vim swap files
+*.swp

@@ -1,0 +1,8 @@
+{
+  "name": "coderteam/crossposting_telegram",
+  "description": "News crossposting to telegram channel",
+  "type": "drupal-module",
+  "require": {
+    "telegram-bot/api": "^2.3"
+  }
+}

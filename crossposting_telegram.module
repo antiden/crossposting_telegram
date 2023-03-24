@@ -1,0 +1,48 @@
+<?php
+
+use TelegramBot\Api\BotApi;
+use TelegramBot\Api\Exception;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\image\Entity\ImageStyle;
+
+/**
+ * Implements hook_entity_insert().
+ * After inserting node, check if active VK status from Config form and publish node to the Company group wall in VK
+ * For testing only update - crossposting_telegram_entity_update
+ */
+
+function crossposting_telegram_entity_update(EntityInterface $entity) {
+  
+  $config = \Drupal::config('crossposting_telegram.settings');
+  $key = $config->get('key');
+  $chat_id = $config->get('chat_id');
+  $active = $entity->field_crossposting_telegram->value; // Choose your field for check status
+
+  if ($active && $entity->getEntityTypeId() == 'node' && $entity->bundle() == 'news') {
+    $access_token = \Drupal::service('key.repository')->getKey($key)->getKeyValue();
+    $id = $entity->id();
+    $nodeUrl = $entity->toUrl('canonical', ['absolute' => TRUE])->toString();
+    $title = $entity->title->value;
+    $text = strip_tags($entity->body->value);
+    $textStrip = str_replace("&nbsp;", '', $text);
+    $image = $entity->field_image->entity->uri->value;
+    $style = ImageStyle::load('wide');
+    $thumb = $style->buildUrl($image);
+
+    // Telegram api
+    $botApi = new BotApi($access_token);
+    $messageText = "<b>{$title}</b><a href='{$thumb}'>&#8203;</a>\n\n{$textStrip}\n<a href='{$nodeUrl}'>" . t('Read on the site') . "</a>";
+
+    try {
+      // Send message to channel
+      $botApi->sendMessage('-' . $chat_id, $messageText, 'HTML');
+
+      // if response "ok" set good message
+      \Drupal::messenger()->addStatus(t('Post successfully posted on the Telegram.'));
+
+    } catch (Exception $e) {
+      // if error show message with response
+      \Drupal::messenger()->addStatus(t('Error posting on the Telegram: ') . $e->getMessage());
+    }
+  }
+}

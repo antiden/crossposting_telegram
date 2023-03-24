@@ -1,0 +1,8 @@
+name: Crossposting to Telegram
+type: module
+description: Publish content in the Telegram Wall
+package: Custom
+core_version_requirement: ^9 || ^10
+
+dependencies:
+  - key:key

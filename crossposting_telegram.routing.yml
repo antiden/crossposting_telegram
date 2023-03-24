@@ -1,0 +1,7 @@
+crossposting_telegram.settings_form:
+  path: '/admin/config/services/crossposting_telegram'
+  defaults:
+    _title: 'Crossposting Settings'
+    _form: 'Drupal\crossposting_telegram\Form\SettingsForm'
+  requirements:
+    _permission: 'administer site configuration'

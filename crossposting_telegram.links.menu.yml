@@ -1,0 +1,6 @@
+crossposting_telegram.settings_form:
+  title: 'Crossposting to Telegram'
+  description: 'Telegram Settings'
+  parent: system.admin_config_services
+  route_name: crossposting_telegram.settings_form
+  weight: 10
