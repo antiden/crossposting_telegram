@@ -1,9 +1,9 @@
 <?php
 
-use TelegramBot\Api\BotApi;
-use TelegramBot\Api\Exception;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\image\Entity\ImageStyle;
+use TelegramBot\Api\BotApi;
+use TelegramBot\Api\Exception;
 
 /**
  * Implements hook_entity_insert().
@@ -11,12 +11,12 @@ use Drupal\image\Entity\ImageStyle;
  * For testing only update - crossposting_telegram_entity_update
  */
 
-function crossposting_telegram_entity_update(EntityInterface $entity) {
+function crossposting_telegram_entity_insert(EntityInterface $entity) {
   
   $config = \Drupal::config('crossposting_telegram.settings');
   $key = $config->get('key');
   $chat_id = $config->get('chat_id');
-  $active = $entity->field_crossposting_telegram->value; // Choose your field for check status
+  $active = $entity->field_crossposting_telegram->value;
 
   if ($active && $entity->getEntityTypeId() == 'node' && $entity->bundle() == 'news') {
     $access_token = \Drupal::service('key.repository')->getKey($key)->getKeyValue();

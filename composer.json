@@ -1,7 +1,20 @@
 {
-  "name": "coderteam/crossposting_telegram",
+  "name": "drupal/crossposting_telegram",
   "description": "News crossposting to telegram channel",
   "type": "drupal-module",
+  "license": "GPL-2.0-or-later",
+  "authors": [
+    {
+      "name": "antiden",
+      "homepage": "https://www.drupal.org/u/antiden",
+      "role": "Maintainer"
+    },
+    {
+      "name": "coderteam",
+      "email": "mail@coderteam.ru",
+      "role": "Co-maintainer"
+    }
+  ],
   "require": {
     "telegram-bot/api": "^2.3"
   }
