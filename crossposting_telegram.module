@@ -1,5 +1,12 @@
 <?php
 
+<<<<<<< HEAD
+=======
+require_once __DIR__.'/vendor/autoload.php';
+
+use TelegramBot\Api\BotApi;
+use TelegramBot\Api\Exception;
+>>>>>>> 8af0504 (fix checking field)
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\image\Entity\ImageStyle;
 use TelegramBot\Api\BotApi;
@@ -16,33 +23,40 @@ function crossposting_telegram_entity_insert(EntityInterface $entity) {
   $config = \Drupal::config('crossposting_telegram.settings');
   $key = $config->get('key');
   $chat_id = $config->get('chat_id');
+<<<<<<< HEAD
   $active = $entity->field_crossposting_telegram->value;
+=======
+>>>>>>> 8af0504 (fix checking field)
 
-  if ($active && $entity->getEntityTypeId() == 'node' && $entity->bundle() == 'news') {
-    $access_token = \Drupal::service('key.repository')->getKey($key)->getKeyValue();
-    $id = $entity->id();
-    $nodeUrl = $entity->toUrl('canonical', ['absolute' => TRUE])->toString();
-    $title = $entity->title->value;
-    $text = strip_tags($entity->body->value);
-    $textStrip = str_replace("&nbsp;", '', $text);
-    $image = $entity->field_image->entity->uri->value;
-    $style = ImageStyle::load('wide');
-    $thumb = $style->buildUrl($image);
+  if ($entity->getEntityTypeId() == 'node' && $entity->bundle() == 'news') {
+    $active = $entity->field_crossposting_telegram->value; // Choose your field for check status
 
-    // Telegram api
-    $botApi = new BotApi($access_token);
-    $messageText = "<b>{$title}</b><a href='{$thumb}'>&#8203;</a>\n\n{$textStrip}\n<a href='{$nodeUrl}'>" . t('Read on the site') . "</a>";
+    if ($active) {
+      $access_token = \Drupal::service('key.repository')->getKey($key)->getKeyValue();
+      $id = $entity->id();
+      $nodeUrl = $entity->toUrl('canonical', ['absolute' => TRUE])->toString();
+      $title = $entity->title->value;
+      $text = strip_tags($entity->body->value);
+      $textStrip = str_replace("&nbsp;", '', $text);
+      $image = $entity->field_image->entity->uri->value;
+      $style = ImageStyle::load('wide');
+      $thumb = $style->buildUrl($image);
 
-    try {
-      // Send message to channel
-      $botApi->sendMessage('-' . $chat_id, $messageText, 'HTML');
+      // Telegram api
+      $botApi = new BotApi($access_token);
+      $messageText = "<b>{$title}</b><a href='{$thumb}'>&#8203;</a>\n\n{$textStrip}\n<a href='{$nodeUrl}'>" . t('Read on the site') . "</a>";
 
-      // if response "ok" set good message
-      \Drupal::messenger()->addStatus(t('Post successfully posted on the Telegram.'));
+      try {
+        // Send message to channel
+        $botApi->sendMessage('-' . $chat_id, $messageText, 'HTML');
 
-    } catch (Exception $e) {
-      // if error show message with response
-      \Drupal::messenger()->addStatus(t('Error posting on the Telegram: ') . $e->getMessage());
+        // if response "ok" set good message
+        \Drupal::messenger()->addStatus(t('Post successfully posted on the Telegram.'));
+
+      } catch (Exception $e) {
+        // if error show message with response
+        \Drupal::messenger()->addStatus(t('Error posting on the Telegram: ') . $e->getMessage());
+      }
     }
   }
 }
